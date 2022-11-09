@@ -1,0 +1,37 @@
+<% let total=0;for(let order of orders){ %>
+<tr>
+    <% for (var i = 0; i < order.length; i++) { order[i].orderitems.forEach((element)=> { %>
+
+    })
+    }
+
+    <td class="product__cart__item">
+        <div class="product__cart__item__pic">
+
+            <% for(let img of order.orderitems[0].productId.image){ %>
+            <img src="<%= img.url %>" alt="<%= img.filename %>" style="width:80px;height:70px;">
+            <% } %>
+
+
+        </div>
+        <div class="product__cart__item__text">
+            <h6><%= order.orderitems[0].productId.productname %></h6>
+
+        </div>
+    </td>
+
+    <td class="quantity__item">
+
+        <h6><%= order.orderitems[0].productqty %></h6>
+
+
+    </td>
+
+
+    <td class="cart__price" id="eachtotal">
+        <%= order.totalamount %></td>
+    <td class="cart__close">
+        cancel
+    </td>
+</tr>
+<% } %>

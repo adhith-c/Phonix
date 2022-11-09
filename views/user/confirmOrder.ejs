@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>Electro - HTML Ecommerce Template</title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" />
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" href="/css/slick.css" />
+    <link type="text/css" rel="stylesheet" href="/css/slick-theme.css" />
+
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" href="/css/nouislider.min.css" />
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" href="/css/style.css" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+
+</head>
+
+<body>
+    <!-- HEADER -->
+    <%- include('../partials/userHeader'); %>
+    <!-- /HEADER -->
+
+    <!-- NAVIGATION -->
+    <nav id="navigation">
+        <!-- container -->
+        <div class="container">
+            <!-- responsive-nav -->
+            <div id="responsive-nav">
+                <!-- NAV -->
+                <ul class="main-nav nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">Hot Deals</a></li>
+                    <li><a href="#">Categories</a></li>
+                    <li><a href="#">Laptops</a></li>
+                    <li><a href="#">Smartphones</a></li>
+                    <li><a href="#">Cameras</a></li>
+                    <li><a href="#">Accessories</a></li>
+                </ul>
+                <!-- /NAV -->
+            </div>
+            <!-- /responsive-nav -->
+        </div>
+        <!-- /container -->
+    </nav>
+    <!-- /NAVIGATION -->
+
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="breadcrumb-header">Checkout</h3>
+                    <ul class="breadcrumb-tree">
+                        <li><a href="#">Home</a></li>
+                        <li class="active">Checkout</li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <!-- SECTION -->
+    <div class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+
+                <div class="col-md-7">
+
+                    <!-- Billing Details -->
+                    <div class="billing-details">
+                        <div class="section-title">
+                            <h3 class="title">Billing address</h3>
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="text" name="firstName" value="<%= order.firstName %>" required
+                                placeholder="First Name">
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="text" name="lastName" value="<%= order.lastName %>"
+                                placeholder="Last Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="email" name="email" value="<%= order.email %>"
+                                placeholder="Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="text" name="address" placeholder="Address"
+                                value="<%= order.addressDetails.address %>" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="text" name="city" placeholder="City"
+                                value="<%= order.addressDetails.city %>" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="text" name="country" placeholder="Country"
+                                value="<%= order.addressDetails.country %>" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="text" name="pincode" placeholder="PIN Code"
+                                value="<%= order.addressDetails.pincode %>" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="tel" name="mobileNumber" placeholder="Mobile Number"
+                                value="<%= order.addressDetails.mobileNumber %>" required>
+                        </div>
+                        <!-- <div class="form-group">
+							<div class="input-checkbox">
+								<input type="checkbox" id="create-account">
+								<label for="create-account">
+									<span></span>
+									Create Account?
+								</label>
+								<div class="caption">
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+										incididunt.</p>
+									<input class="input" type="password" name="password"
+										placeholder="Enter Your Password">
+								</div>
+							</div>
+						</div> -->
+                    </div>
+                    <!-- /Billing Details -->
+
+                    <!-- Shiping Details -->
+
+                    <!-- Order notes -->
+                    <div class="order-notes">
+                        <textarea class="input" name="orderNotes"
+                            placeholder="Order Notes"><%= order.orderNotes %></textarea>
+                    </div>
+                    <!-- /Order notes -->
+                </div>
+
+                <!-- Order Details -->
+                <div class="col-md-5 order-details">
+                    <div class="section-title text-center">
+                        <h3 class="title">Your Order</h3>
+                    </div>
+                    <div class="order-summary">
+                        <div class="order-col">
+                            <div><strong>PRODUCT</strong></div>
+                            <div><strong>TOTAL</strong></div>
+                        </div>
+                        <div class="order-products">
+                            <% for(let item of order.orderItems){ %>
+                            <div class="order-col">
+                                <div><%= item.productQuantity %>x </div>
+                                <div><%= item.productName %></div>
+                                <div><%= item.productPrice %></div>
+                            </div>
+
+                            <% } %>
+                        </div>
+                        <div class="order-col">
+                            <div>SubTotal</div>
+                            <div><strong><%= subCart%></strong></div>
+                        </div>
+                        <div class="order-col">
+                            <div>Discount</div>
+                            <div><strong>-<%= discCart %></strong></div>
+                        </div>
+                        <div class="order-col">
+                            <div>Shiping</div>
+                            <div><strong>FREE</strong></div>
+                        </div>
+                        <!-- <div class="order-col">
+                            <div><strong>TOTAL</strong></div>
+                            <div><strong class="order-total">₹<%= grandCart %></strong></div>
+                           
+                        </div> -->
+                        <div class="order-col">
+                            <div><strong>TOTAL</strong></div>
+                            <div><strong class="order-total">₹<%= order.totalAmount %></strong></div>
+
+                        </div>
+                    </div>
+                    <div class="payment-method">
+                        <% if(order.paymentType =="COD"){ %>
+                        <div class="input-radio">
+                            <input type="radio" name="payment" id="payment" value="COD" checked disabled>
+                            <label for="payment-1">
+                                <span></span>
+                                Cash On Delivery(COD)
+                            </label>
+                            <div class="caption">
+                                <p>Pay when you recieve the product.</p>
+                            </div>
+                        </div>
+                        <div class="input-radio">
+                            <input type="radio" name="payment" id="payment" value="RazorPay" disabled>
+                            <label for="payment-2">
+                                <span></span>
+                                Online Payment
+                            </label>
+                            <div class="caption">
+                                <!-- <button id="rzp-button1">Pay</button> -->
+                            </div>
+                        </div>
+
+                        <% } else{ %>
+                        <div class="input-radio">
+                            <input type="radio" name="payment" id="payment" value="COD" disabled>
+                            <label for="payment-1">
+                                <span></span>
+                                Cash On Delivery(COD)
+                            </label>
+                            <div class="caption">
+                                <p>Pay when you recieve the product.</p>
+                            </div>
+                        </div>
+                        <div class="input-radio">
+                            <input type="radio" name="payment" id="payment" value="RazorPay" checked disabled>
+                            <label for="payment-2">
+                                <span></span>
+                                Online Payment
+                            </label>
+                            <div class="caption">
+
+                            </div>
+                        </div>
+                        <% } %>
+
+                    </div>
+                    <div class="input-checkbox">
+                        <input type="checkbox" id="terms">
+                        <label for="terms">
+                            <span></span>
+                            I've read and accept the <a href="#">terms & conditions</a>
+                        </label>
+                    </div>
+                    <button class="primary-btn"
+                        onclick="placeOrder('<%= order.totalAmount %>','<%= order._id %>')">Place
+                        order</button>
+                </div>
+                <!-- /Order Details    -->
+                <!-- Button trigger modal -->
+                <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+						Launch demo modal
+					</button> -->
+                </form>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /SECTION -->
+
+    <!-- NEWSLETTER -->
+    <div id="newsletter" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="newsletter">
+                        <p>Sign Up for the <strong>NEWSLETTER</strong></p>
+                        <form>
+                            <input class="input" type="email" placeholder="Enter Your Email">
+                            <button class="newsletter-btn"><i class="fa fa-envelope"></i> Subscribe</button>
+                        </form>
+                        <ul class="newsletter-follow">
+                            <li>
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /NEWSLETTER -->
+
+    <!-- FOOTER -->
+    <%- include('../partials/userFooter'); %>
+    <!-- /FOOTER -->
+    <script>
+
+    </script>
+    <!-- jQuery Plugins -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/slick.min.js"></script>
+    <script src="/js/nouislider.min.js"></script>
+    <script src="/js/jquery.zoom.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+        const address = document.getElementById('address').value;
+        const mobileNumber = document.getElementById('mobileNumber').value;
+
+        function placeOrder(totalAmount, orderId) {
+
+            fetch('/checkout/payment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                // body: JSON.stringify({
+                //     address,
+                //     mobileNumber
+                // })
+            }).then(res => res.json()).then(data => {
+                if (data.msg == 'COD') {
+                    window.location = '/checkout/orderSuccess';
+                    return false;
+                } else {
+                    razerpayFunction(data.options, data.userDetails, data.orderId);
+                }
+            });
+        }
+
+        function razerpayFunction(payDetails, userDetails, orderId) {
+            var options = {
+                "key": "rzp_test_EvbB2VktzeIYpS",
+                "amount": payDetails.amount,
+                "currency": "INR",
+                "name": "Phonix",
+                "description": "Phonix Payment",
+                "image": "http://localhost:7000/assets/images/Phonix-1.png",
+                "order_id": orderId,
+                "handler": function (response) {
+                    paymentSuccess(response, payDetails, userDetails, orderId);
+                },
+                "prefill": {
+                    "name": userDetails.fullName,
+                    "email": userDetails.userEmail,
+                    "contact": userDetails.mobileNumber
+                },
+                "notes": {
+                    "address": userDetails.address
+                },
+                "theme": {
+                    "color": "#3399cc"
+                }
+            };
+            var rzp1 = new Razorpay(options);
+            rzp1.on('payment.failed', function (response) {
+                window.location = '/gp/checkout/orderFailed';
+            });
+            rzp1.open();
+            e.preventDefault();
+        }
+
+        function paymentSuccess(response, payDetails, userDetails, orderId) {
+            fetch('/checkout/is-order-approved', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    response,
+                    payDetails,
+                    userDetails,
+                    orderId
+                })
+            }).then(res => res.json()).then(data => {
+                if (data.paymentStatus == 'success') {
+                    console.log(data.paymentStatus)
+                    window.location = '/checkout/orderSuccess';
+                } else {
+                    window.location = '/checkout/orderFailed';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>Electro - HTML Ecommerce Template</title>
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" />
+
+    <!-- Slick -->
+    <link type="text/css" rel="stylesheet" href="/css/slick.css" />
+    <link type="text/css" rel="stylesheet" href="/css/slick-theme.css" />
+
+    <!-- nouislider -->
+    <link type="text/css" rel="stylesheet" href="/css/nouislider.min.css" />
+
+    <!-- Font Awesome Icon -->
+    <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+    <!-- Custom stlylesheet -->
+    <link type="text/css" rel="stylesheet" href="/css/style.css" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+ 		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+ 		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+ 		<![endif]-->
+    <style type="text/css">
+        body {
+            background: #f2f2f2;
+        }
+
+        .payment {
+            border: 1px solid #f2f2f2;
+            height: 280px;
+            border-radius: 20px;
+            background: #fff;
+        }
+
+        .payment_header {
+            background: rgba(255, 102, 0, 1);
+            padding: 20px;
+            border-radius: 20px 20px 0px 0px;
+
+        }
+
+        .check {
+            margin: 0px auto;
+            width: 50px;
+            height: 50px;
+            border-radius: 100%;
+            background: #fff;
+            text-align: center;
+        }
+
+        .check i {
+            vertical-align: middle;
+            line-height: 50px;
+            font-size: 30px;
+        }
+
+        .content {
+            text-align: center;
+        }
+
+        .content h1 {
+            font-size: 25px;
+            padding-top: 25px;
+        }
+
+        .btn {
+            width: 150px;
+            height: 35px;
+            color: #fff;
+            border-radius: 30px;
+            padding: 5px 10px;
+            background: rgba(255, 102, 0, 1);
+            transition: all ease-in-out 0.3s;
+        }
+
+        .btn:hover {
+            text-decoration: none;
+            background: #000;
+        }
+
+        .content a {
+            width: 200px;
+            height: 35px;
+            color: #fff;
+            border-radius: 30px;
+            padding: 5px 10px;
+            background: rgba(255, 102, 0, 1);
+            transition: all ease-in-out 0.3s;
+        }
+
+        .content a:hover {
+            text-decoration: none;
+            background: #000;
+        }
+    </style>
+
+
+
+</head>
+
+<body>
+    <!-- HEADER -->
+    <%- include('../partials/userHeader'); %>
+    <!-- /HEADER -->
+
+    <!-- NAVIGATION -->
+
+    <!-- /NAVIGATION -->
+
+    <!-- BREADCRUMB -->
+    <div id="breadcrumb" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- <div class="col-md-12">
+                    <h3 class="breadcrumb-header">Regular Page</h3>
+                    <ul class="breadcrumb-tree">
+                        <li><a href="#">Home</a></li>
+                        <li class="active">Blank</li>
+                    </ul>
+                </div> -->
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /BREADCRUMB -->
+
+    <!-- SECTION -->
+    <div class="section">
+        <!-- container -->
+
+
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-md-6  mt-2">
+                    <div class="payment">
+                        <div class="payment_header">
+                            <div class="check"><i class="fa fa-check" aria-hidden="true"></i></div>
+                        </div>
+                        <div class="content">
+                            <% if(payment){ %>
+                            <h1>Payment Success !</h1>
+                            <% } else { %>
+                            <h1>Order Placed Successfully</h1>
+                            <% } %>
+                            <p>We received your order request;<br /> we'll be in touch shortly!</p>
+                            <a href="/">Go to Home</a>
+                            <button data-toggle="modal" class="btn btn-success rounded btn-sm"
+                                onclick="orders('<%= order._id %>')" data-target="#order">Order Summary</button>
+                            <a href="/orders">view Orders</a>
+                        </div>
+                        <div class="modal fade" id="order" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-l" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header text-center">
+                                        <h3 class="modal-title" id="exampleModalLabel">INVOICE</h3>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="col-md-12 order-details">
+
+                                            <div class="order-summary">
+                                                <div class="order-col">
+                                                    <div><strong>PRODUCT</strong></div>
+                                                    <div><strong>PRICE</strong></div>
+                                                </div>
+                                                <div class="modal-subbody" id="orderdiv"></div>
+
+                                                <div class="order-col">
+                                                    <div><strong>TOTAL</strong></div>
+                                                    <div><strong class="order-total" id="order-total"></strong>
+                                                    </div>
+                                                </div>
+                                                <div><strong>DELIVERY TO:</strong></div>
+                                                <div class="addressbody" id="addressdiv"></div>
+                                                <div class="order-col">
+                                                    <div class="mt-2"><strong>PAYMENT STATUS:</strong></div>
+                                                    <div class="paymentbody" id="paymentdiv"></div>
+                                                </div>
+                                                <div class="order-col">
+                                                    <div class="mt-2"><strong>ORDER STATUS:</strong></div>
+                                                    <div class="orderbody" id="orderstatus"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-success" data-dismiss="modal">Done</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- /container -->
+    </div>
+    <!-- /SECTION -->
+
+    <!-- NEWSLETTER -->
+    <div id="newsletter" class="section">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="newsletter">
+                        <p>Sign Up for the <strong>NEWSLETTER</strong></p>
+                        <form>
+                            <input class="input" type="email" placeholder="Enter Your Email">
+                            <button class="newsletter-btn"><i class="fa fa-envelope"></i> Subscribe</button>
+                        </form>
+                        <ul class="newsletter-follow">
+                            <li>
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-instagram"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-pinterest"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- /row -->
+        </div>
+        <!-- /container -->
+    </div>
+    <!-- /NEWSLETTER -->
+
+    <!-- FOOTER -->
+    <%- include('../partials/userFooter'); %>
+    <!-- /FOOTER -->
+
+    <!-- jQuery Plugins -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/slick.min.js"></script>
+    <script src="/js/nouislider.min.js"></script>
+    <script src="/js/jquery.zoom.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        function orders(id) {
+            let divMain = document.getElementById('orderdiv');
+            let total = document.getElementById('order-total');
+            let addressDiv = document.getElementById('addressdiv');
+            let address = '';
+            let divs = '';
+            console.log(id);
+            fetch('/orderfetch', {
+                    method: 'post',
+                    headers: {
+                        'Content-type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    const item = data.order.orderItems[0];
+                    console.log('data.orderItems', item)
+                    console.log(data.order)
+
+                    data.order.orderItems.forEach(p => {
+                        divs += `<div class="order-products">
+
+            <div class="order-col">
+                <div>${p.productQuantity} x </div>
+                <div>${p.productName} </div>
+                <div> ${p.productPrice}</div>
+            </div>
+        </div>`
+                    })
+                    address += `<div>
+            ${data.order.addressDetails.address}
+        </div>
+        <div>
+            ${data.order.addressDetails.city},${data.order.addressDetails.country},${data.order.addressDetails.pincode}
+        </div>
+        <div>${data.order.addressDetails.mobileNumber}</div>`
+                    console.log('divs', divs)
+                    divMain.innerHTML = divs;
+                    total.innerHTML = `${data.order.totalAmount}`
+                    addressDiv.innerHTML = address
+                    document.getElementById('paymentdiv').innerHTML = `${data.order.paymentStatus}`
+                    document.getElementById('orderstatus').innerHTML = `${data.order.orderStatus}`
+
+
+                })
+        }
+    </script>
+</body>
+
+</html>

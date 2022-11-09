@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<%- include('../partials/userNavBar'); %>
+
+<body>
+    <!-- HEADER -->
+    <%- include('../partials/userHeader'); %>
+    <!-- /HEADER -->
+
+    <!-- NAVIGATION -->
+    <nav id="navigation">
+        <!-- container -->
+        <div class="container">
+            <!-- responsive-nav -->
+            <div id="responsive-nav">
+                <!-- NAV -->
+                <ul class="main-nav nav navbar-nav">
+                    <li class="active"><a href="/profile">Profile</a></li>
+                    <li><a href="/orders">Orders</a></li>
+
+                </ul>
+                <!-- /NAV -->
+            </div>
+            <!-- /responsive-nav -->
+        </div>
+        <!-- /container -->
+    </nav>
+    <!-- /NAVIGATION -->
+    <div class="container">
+        <!-- Profile Details -->
+
+        <div class="billing-details">
+            <div class="section-title text-center">
+                <h3 class="title text-center">USER PROFILE</h3>
+
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <input class="input" type="text" name="firstname" value="<%= user.firstname %>"
+                            placeholder="First Name">
+                    </div>
+                    <div>
+                        <input class="input" type="text" name="lastname" value="<%= user.lastname %>"
+                            placeholder=" Last Name" required>
+                    </div>
+                    <div class="form-group">
+
+                    </div>
+                    <div class="form-group">
+                        <input class="input" type="email" name="email" value="<%= user.username %>" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addaddress">Add
+                            New Address</button>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-7">
+                    <div class="section-title text-center">
+                        <h3 class="title text-center">ADDRESS</h3>
+                    </div>
+                    <div class="">
+                        <% let num=1; user.addressDetails.forEach(address=>{ %>
+                        <div class="newaddr">
+                            <!-- <div class="col-md"></div> -->
+                            <div class="col-md-8">
+                                <h6><%= address.address %>,<%= address.city %>,<%= address.country %>,
+                                    <%= address.pinCode %></h6>
+                                <h6><%= address.mobileNumber %></h6>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn-xs btn-success" data-toggle="modal"
+                                    data-target="#editaddress" onclick="getAddress('<%=address._id %>')">
+                                    Edit
+                                </button>
+                                <button type="button" class="btn-xs btn-danger" data-toggle="modal"
+                                    data-target="#deleteaddress">Delete</button>
+                            </div>
+                        </div>
+                        <% num++; }) %>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="form-group">
+                                        <input class="input" type="text" name="address" placeholder="Address"
+                                            value="<%= user.addressDetails.address %>" required>
+                                </div>
+                                <div class="form-group">
+                                    <input class="input" type="text" name="city" placeholder="City"
+                                        value="<%= user.addressDetails.city %>" required>
+                                </div>
+                                <div class="form-group">
+                                    <input class="input" type="text" name="country"
+                                        value="<%= user.addressDetails.country %>" placeholder="Country" required>
+                                </div>
+                                <div class="form-group">
+                                    <input class="input" type="text" name="pincode"
+                                        value="<%= user.addressDetails.pincode %>" placeholder="ZIP Code" required>
+                                </div>
+                                <div class="form-group">
+                                    <input class="input" type="tel" name="mobileNumber"
+                                        value="<%= user.addressDetails.mobilenumber %>" placeholder="Mobile Number"
+                                        required>
+                                </div>
+                                <div class="text-center">
+                                    <button class="primary-btn order-submit text-center">Submit</button>
+                                </div> -->
+        </div>
+
+        <!-- /Profile -->
+    </div>
+
+    <!-- FOOTER -->
+    <footer id="footer">
+        <!-- top footer -->
+        <div class="section">
+            <!-- container -->
+            <div class="container">
+                <!-- row -->
+                <div class="row">
+                    <div class="col-md-3 col-xs-6">
+                        <div class="footer">
+                            <h3 class="footer-title">About Us</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor
+                                incididunt ut.</p>
+                            <ul class="footer-links">
+                                <li><a href="#"><i class="fa fa-map-marker"></i>1734 Stonecoal Road</a></li>
+                                <li><a href="#"><i class="fa fa-phone"></i>+021-95-51-84</a></li>
+                                <li><a href="#"><i class="fa fa-envelope-o"></i>email@email.com</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-xs-6">
+                        <div class="footer">
+                            <h3 class="footer-title">Categories</h3>
+                            <ul class="footer-links">
+                                <li><a href="#">Hot deals</a></li>
+                                <li><a href="#">Laptops</a></li>
+                                <li><a href="#">Smartphones</a></li>
+                                <li><a href="#">Cameras</a></li>
+                                <li><a href="#">Accessories</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="clearfix visible-xs"></div>
+
+                    <div class="col-md-3 col-xs-6">
+                        <div class="footer">
+                            <h3 class="footer-title">Information</h3>
+                            <ul class="footer-links">
+                                <li><a href="#">About Us</a></li>
+                                <li><a href="#">Contact Us</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="#">Orders and Returns</a></li>
+                                <li><a href="#">Terms & Conditions</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 col-xs-6">
+                        <div class="footer">
+                            <h3 class="footer-title">Service</h3>
+                            <ul class="footer-links">
+                                <li><a href="#">My Account</a></li>
+                                <li><a href="#">View Cart</a></li>
+                                <li><a href="#">Wishlist</a></li>
+                                <li><a href="#">Track My Order</a></li>
+                                <li><a href="#">Help</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- /row -->
+            </div>
+            <!-- /container -->
+        </div>
+        <!-- /top footer -->
+
+        <!-- bottom footer -->
+        <div id="bottom-footer" class="section">
+            <div class="container">
+                <!-- row -->
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <ul class="footer-payments">
+                            <li><a href="#"><i class="fa fa-cc-visa"></i></a></li>
+                            <li><a href="#"><i class="fa fa-credit-card"></i></a></li>
+                            <li><a href="#"><i class="fa fa-cc-paypal"></i></a></li>
+                            <li><a href="#"><i class="fa fa-cc-mastercard"></i></a></li>
+                            <li><a href="#"><i class="fa fa-cc-discover"></i></a></li>
+                            <li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
+                        </ul>
+                        <span class="copyright">
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            Copyright &copy;<script>
+                                document.write(new Date().getFullYear());
+                            </script> All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        </span>
+                    </div>
+                </div>
+                <!-- /row -->
+            </div>
+            <!-- /container -->
+        </div>
+        <!-- /bottom footer -->
+    </footer>
+    <!-- /FOOTER -->
+
+    <!-- Edit ADDRESS Modal -->
+    <div class="modal fade" id="editaddress" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit ADDRESS</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modalbody">
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Edit ADDRESS Modal -->
+
+    <!-- ADD ADDRESS Modal -->
+    <div class="modal fade" id="addaddress" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabe1"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabe1">Add New ADDRESS</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="/addnewaddress" method="post">
+                        <div class="form-group">
+                            <input class="input" type="text" name="address" placeholder="Address"
+                                value="<%= user.addressDetails.address %>" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="text" name="city" placeholder="City" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="text" name="country" placeholder="Country" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="text" name="pinCode" placeholder="ZIP Code" required>
+                        </div>
+                        <div class="form-group">
+                            <input class="input" type="tel" name="mobileNumber" placeholder="Mobile Number" required>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="primary-btn order-submit text-center">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /ADD ADDRESS Modal -->
+
+    <!-- /DELETE ADDRESS Modal -->
+    <div class="modal fade" id="deleteaddress" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Delete ADDRESS</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h6>Are You Sure You Want To Delete This Address?</h6>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" class="btn btn-primary" <% user.addressDetails.forEach(address=>{ %>
+                        onclick="deleteAddress('<%= address._id %>')" <% }) %>>Delete</button>
+
+
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /DELETE ADDRESS Modal -->
+
+    <!-- jQuery Plugins -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/slick.min.js"></script>
+    <script src="js/nouislider.min.js"></script>
+    <script src="js/jquery.zoom.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        function getAddress(addressid) {
+            let modalbody = document.getElementById('modalbody');
+            fetch('/getaddress', {
+                method: "post",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    addressid: addressid
+                })
+            }).then(res => res.json()).then(data => {
+                console.log(data)
+                modalbody.innerHTML = `
+                <form method="post" action="/editaddress/${data.address.addressDetails._id}">
+                <div class="form-group">
+                   <input class="input" type="text" name="address" placeholder="Address"
+                     value="${data.address.addressDetails.address}" required>
+               </div>
+               <div class="form-group">
+                   <input class="input" type="text" name="city" placeholder="City"
+                       value="${data.address.addressDetails.city}"
+                       required>
+               </div>
+               <div class="form-group">
+                   <input class="input" type="text" name="country" 
+                       placeholder="Country" value="${data.address.addressDetails.country}" required>
+               </div>
+               <div class="form-group">
+                   <input class="input" type="text" name="pinCode" value="${data.address.addressDetails.pinCode}""
+                       placeholder="ZIP Code" required>
+               </div>
+               <div class="form-group">
+                   <input class="input" type="tel" name="mobileNumber"
+                       value="${data.address.addressDetails.mobileNumber}""
+                       placeholder="Mobile Number" required>
+               </div>
+               <div class="text-center">
+                   <button class="primary-btn order-submit text-center">Submit</button>
+               </div>
+               </form>`
+
+            });
+        }
+
+        function deleteAddress(addressid) {
+            fetch('/deleteaddress', {
+                method: "post",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    addressid: addressid
+                })
+            }).then(res => res.json()).then(data => {
+                window.location.href = "/profile"
+            })
+        }
+    </script>
+
+</body>
+
+</html>
