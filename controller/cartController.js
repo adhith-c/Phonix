@@ -501,6 +501,8 @@ const deleteFromCart = async (req, res) => {
 }
 
 const checkCoupon = async (req, res) => {
+    let userId = req.session.userId;
+    userId = mongoose.Types.ObjectId(userId);
     let obj = JSON.parse(JSON.stringify(req.body));
     console.log(obj)
     let {
@@ -520,12 +522,22 @@ const checkCoupon = async (req, res) => {
         if (reduce > coupon.maxLimit) {
             grandTotal -= coupon.maxLimit;
             reduce = coupon.maxLimit;
+            
         } else {
             grandTotal -= reduce;
         }
         // const final = total;
         //console.log('total' + total);
         //total = totalAmount;
+        const cart = await Cart.findOne({
+            userId: userId
+        });
+        cart.discount.push({
+            code: coupon.couponName,
+            amount: reduce
+        });
+        await cart.save();
+        console.log('discccccccccccccccccccccccccccccccccccccc caaaaaaaaaaaat', cart);
         res.send({
             reduce,
             grandTotal

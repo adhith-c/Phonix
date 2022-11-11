@@ -13,7 +13,15 @@ const BannerSchema = new Schema({
     image: [{
         url: String,
         filename: String
-    }]
+    }],
+    couponName: {
+        type: String,
+        ref: 'Coupon',
+        required: true
+    },
+    expiresAt: {
+        type: Number
+    }
 }, {
     timestamps: true
 });

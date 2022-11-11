@@ -29,8 +29,13 @@ const loginValidate = (req, res, next) => {
     })(req, res, next);
 };
 const home = async (req, res) => {
-    const banners = await Banner.find({});
-    //console.log(banners)
+    const banners = await Banner.findOne({}).sort({
+        createdAt: -1
+    });
+    let date = new Date
+    date.setDate(date.getDate(banners.createdAt) + banners.expiresAt)
+    date = date.toDateString();
+    console.log(date)
     const products = await Product.find({});
     const brands = await Brand.find({});
     const newProducts = await Product.find({
@@ -76,7 +81,8 @@ const home = async (req, res) => {
             newProducts,
             brands,
             cartCount,
-            wishlistCount
+            wishlistCount,
+            date
         });
         console.log(wishlistCount)
     } else {
@@ -87,7 +93,8 @@ const home = async (req, res) => {
             newProducts,
             brands,
             cartCount: '',
-            wishlistCount: ''
+            wishlistCount: '',
+            date
         });
 
     }

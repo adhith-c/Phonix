@@ -97,6 +97,13 @@
      const products = await Product.find({
          brand: brandName
      });
+     let pageproduct = await Product.aggregate([{
+         $match: {
+             brand: brandName
+         }
+     }])
+     pageproduct=JSON.stringify(pageproduct)
+     console.log(pageproduct)
      let userId = req.session.userId;
      const categories = await Category.find({});
      userId = mongoose.Types.ObjectId(userId);
@@ -130,7 +137,8 @@
          categories,
          cartCount,
          wishlistCount,
-         brands
+         brands,
+         pageproduct
      })
  }
 

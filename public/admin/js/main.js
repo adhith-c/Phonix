@@ -90,13 +90,23 @@
     // Salse & Revenue Chart
     let sale = document.getElementById('graph').value;
     let revenue = document.getElementById('revenue').value;
+    let graphLabels = document.getElementById('graphlabels').value;
+    console.log(graphLabels)
+    graphLabels = JSON.parse(graphLabels)
+    console.log(graphLabels)
+    let label=[]
+    for (let i = 0; i < graphLabels.length; i++){
+        label.push(graphLabels[i]);
+    }
+    console.log(label)
+    
     var ctx2 = $("#salse-revenue").get(0).getContext("2d");
     var myChart2 = new Chart(ctx2, {
         type: "line",
         data: {
-            labels: ["Day1", "Day2", "Day3", "Day4", "Day5", "Day6", "Day7"],
+            labels: [...label],
             datasets: [{
-                    label: "Salse",
+                    label: "Sales",
                     data: [...sale],
                     backgroundColor: "rgba(235, 22, 22, .7)",
                     fill: true
@@ -123,7 +133,7 @@
     var myChart6 = new Chart(ctx6, {
         type: "doughnut",
         data: {
-            labels: ["COD", "ONLINE"],
+            labels: ["ONLINE", "COD"],
             datasets: [{
                 backgroundColor: [
                     "rgba(235, 22, 22, .7)",

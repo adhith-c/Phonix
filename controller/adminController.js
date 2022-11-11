@@ -126,12 +126,15 @@ const getDashboard = async (req, res, next) => {
     );
     console.log(graph)
     let values = [];
-    let revenue = []
+    let revenue = [];
+    let graphlabels = [];
     graph.forEach((g) => {
+        graphlabels.push(g._id);
         values.push(g.totalPrice)
         revenue.push(g.totalPrice * 10 / 100)
     })
-
+    graphlabels = JSON.stringify(graphlabels)
+    console.log('graphlabels', graphlabels)
     const recentSales = await Order.find({
         paymentStatus: {
             $eq: 'paid'
@@ -237,7 +240,8 @@ const getDashboard = async (req, res, next) => {
         recentSales,
         paymentGraph,
         categoryValues,
-        label
+        label,
+        graphlabels
     });
 
 }
@@ -333,8 +337,11 @@ const getBanner = async (req, res) => {
         banners
     });
 }
-const getNewBanner = (req, res) => {
-    res.render('admin/addBanner');
+const getNewBanner = async (req, res) => {
+    const coupons = await Coupon.find({});
+    res.render('admin/addBanner', {
+        coupons
+    });
 }
 
 const postNewBanner = async (req, res) => {

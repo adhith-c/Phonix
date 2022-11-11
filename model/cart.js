@@ -18,6 +18,14 @@ const CartSchema = new Schema({
             type: Number,
             required: true
         }
+    }],
+    discount: [{
+        code: {
+            type: String
+        },
+        amount: {
+            type: Number
+        }
     }]
 }, {
     timestamps: true

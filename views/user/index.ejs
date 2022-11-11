@@ -175,7 +175,10 @@
 		<div class="container">
 			<!-- row -->
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-12" style=" padding: 60px 0px;
+					margin: 30px 0px;background-image: url('<%= banners.image[0].url %>');background-size: contain;
+					background-repeat: no-repeat;">
+					<input type="hidden" id="expiresAt" value="<%= date %>">
 					<div class="hot-deal">
 						<ul class="hot-deal-countdown">
 							<li>
@@ -207,13 +210,13 @@
 			</div>
 			<!-- /row -->
 			<!-- <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-				<% for(let banner of banners){ %>
+				
 				<div class="carousel-inner"> 
-					<% for(let img of banner.image){ %>
+					
 					<div class="carousel-item active">
-						<img class="d-block" src="<%= img.url %>" alt="First slide" height="500" width="400">
+						<img class="d-block" src="" alt="First slide" height="500" width="400">
 					</div>
-					<% } %>
+					
 
 				</div>
 				<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -224,16 +227,16 @@
 					<span class="carousel-control-next-icon" aria-hidden="true"></span>
 					<span class="sr-only">Next</span>
 				</a>
-				<% } %>
+				
 			</div> -->
 			<!-- <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
-				<% for(banner of banners){ %>
+				
 				<div class="carousel-inner">
-					<% for(img of banner.image){ %>
+					
 					<div class="carousel-item active">
-						<img src="<%= img.url %>" class="d-block w-100" alt="<%= img.filename %>">
+						<img src="" class="d-block w-100" alt="">
 					</div>
-					<% } %>
+				
 
 				</div>
 
@@ -247,7 +250,7 @@
 					<span class="carousel-control-next-icon" aria-hidden="true"></span>
 					<span class="visually-hidden">Next</span>
 				</button>
-				<% } %>
+				
 			</div> -->
 		</div>
 		<!-- /container -->
@@ -373,7 +376,7 @@
 							<div class="product-widget">
 								<div class="product-img">
 									<% for(let img of product.image){ %>
-									<img src="<%= img.url %>" alt="<%= img.filename %>">
+									<img src="<%= img.url %>" alt="<%= img.filename %>" height="240" width="300">
 									<% } %>
 								</div>
 								<div class="product-body">
@@ -714,34 +717,40 @@
 	<script src="js/jquery.zoom.min.js"></script>
 	<script src="js/main.js"></script>
 	<script>
+		let expiry = document.getElementById('expiresAt').value
+		console.log(expiry)
+		console.log(typeof (expiry))
+		expiry = new Date(expiry)
+		console.log(expiry)
+		console.log(typeof (expiry))
 		// The data/time we want to countdown to
-		var countDownDate = new Date("Dec 5, 2022 16:37:52").getTime();
-
+		let countDownDate = new Date(expiry).getTime();
+		console.log(countDownDate)
 		// Run myfunc every second
-		var myfunc = setInterval(function () {
+		let myfunc = setInterval(function () {
 
-			var now = new Date().getTime();
-			var timeleft = countDownDate - now;
+			let now = new Date().getTime();
+			let timeleft = countDownDate - now;
 
 			// Calculating the days, hours, minutes and seconds left
-			var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
-			var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-			var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
-			var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
+			let days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
+			let hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+			let minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
+			let seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
 
 			// Result is output to the specific element
-			document.getElementById("days").innerHTML = days + "d "
-			document.getElementById("hours").innerHTML = hours + "h "
-			document.getElementById("mins").innerHTML = minutes + "m "
-			document.getElementById("secs").innerHTML = seconds + "s "
+			document.getElementById("days").innerHTML = days + "d"
+			document.getElementById("hours").innerHTML = hours + "h"
+			document.getElementById("mins").innerHTML = minutes + "m"
+			document.getElementById("secs").innerHTML = seconds + "s"
 
 			// Display the message when countdown is over
 			if (timeleft < 0) {
 				clearInterval(myfunc);
-				document.getElementById("days").innerHTML = ""
-				document.getElementById("hours").innerHTML = ""
-				document.getElementById("mins").innerHTML = ""
-				document.getElementById("secs").innerHTML = ""
+				document.getElementById("days").innerHTML = "";
+				document.getElementById("hours").innerHTML = "";
+				document.getElementById("mins").innerHTML = "";
+				document.getElementById("secs").innerHTML = "";
 				document.getElementById("end").innerHTML = "TIME UP!!";
 			}
 		}, 1000);

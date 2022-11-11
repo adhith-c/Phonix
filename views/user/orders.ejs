@@ -149,6 +149,10 @@
                                                     </div>
                                                     <div class="modal-subbody" id="orderdiv"></div>
 
+                                                    <div><strong>Discount:</strong></div>
+                                                    <div><strong class="order-subtotal" id="order-discount"></strong>
+                                                    </div>
+
                                                     <div class="order-col">
                                                         <div><strong>TOTAL</strong></div>
                                                         <div><strong class="order-total" id="order-total"></strong>
@@ -258,6 +262,8 @@
     <script src="../cart/js/mixitup.min.js"></script>
     <script src="../cart/js/owl.carousel.min.js"></script>
     <script src="../cart/js/main.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
     <script>
         $(document).ready(function () {
             $('#example').DataTable();
@@ -315,6 +321,8 @@
             let divMain = document.getElementById('orderdiv');
             let total = document.getElementById('order-total');
             let addressDiv = document.getElementById('addressdiv');
+            let Discount = document.getElementById('order-discount');
+
             let address = '';
             let divs = '';
             console.log(id);
@@ -351,6 +359,14 @@
                     <div>${data.order.addressDetails.mobileNumber}</div>`
                     console.log('divs', divs)
                     divMain.innerHTML = divs;
+                    if (data.order.discount.length > 0) {
+                        Discount.innerHTML = `<div>Coupon
+                        Code:${data.order.discount[0].code}</div>
+                    <div>Amount:${data.order.discount[0].amount}</div>`
+                    } else {
+                        Discount.innerHTML = `<div>Coupon Code:No Coupons Applied</div><div>Amount:-0</div>`
+                    }
+
                     total.innerHTML = `${data.order.totalAmount}`
                     addressDiv.innerHTML = address
                     document.getElementById('paymentdiv').innerHTML = `${data.order.paymentStatus}`
@@ -362,19 +378,39 @@
 
         function cancelOrder(orderId) {
             let cancelOrder = document.getElementById('canceltd' + orderId);
-            fetch('/ordercancel', {
-                    method: 'post',
-                    headers: {
-                        'Content-type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        orderId
-                    })
+            swal({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this Order",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
                 })
-                .then(res => res.json())
-                .then(data => {
-                    cancelOrder.innerHTML = data.status;
-                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("Poof! Order has been Cancelled!", {
+                            icon: "success",
+
+                        });
+                        fetch('/ordercancel', {
+                                method: 'post',
+                                headers: {
+                                    'Content-type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    orderId
+                                })
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                cancelOrder.innerHTML = data.status;
+                            })
+
+                    } else {
+                        swal("Your Order is safe!");
+                        return false
+                    }
+                });
+
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>

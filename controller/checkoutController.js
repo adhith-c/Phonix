@@ -103,8 +103,8 @@ const getCheckout = async (req, res) => {
 }
 
 const postCheckout = async (req, res) => {
-    console.log('req.user', req.user);
-    //console.log('req.body', req.body);
+    //console.log('req.user', req.user);
+    console.log('req.body', req.body);
     const obj = JSON.parse(JSON.stringify(req.body));
     console.log('req.body', obj);
     let userId = req.session.userId;
@@ -117,6 +117,8 @@ const postCheckout = async (req, res) => {
             path: "productId",
         }
     });
+    let discountItems = [...cart.discount];
+
     let orderItems = [];
     cart.cartItems.forEach((items) => {
         eachItem = {
@@ -125,9 +127,9 @@ const postCheckout = async (req, res) => {
             productQuantity: items.productQuantity,
             productPrice: items.productId.price
         };
-        console.log('each item:', eachItem);
+        //console.log('each item:', eachItem);
         orderItems.push(eachItem);
-        console.log('items:', items);
+        //console.log('items:', items);
     });
     const user = await User.findOne({
         _id: userId
@@ -177,8 +179,8 @@ const postCheckout = async (req, res) => {
         orderItems: orderItems,
         totalAmount: req.body.totalAmount,
         paymentType: req.body.payment,
-        orderNotes: req.body.orderNotes
-
+        orderNotes: req.body.orderNotes,
+        discount:discountItems
     })
     await neworder.save();
     req.session.orderId = neworder._id;
@@ -186,7 +188,7 @@ const postCheckout = async (req, res) => {
     req.session.save();
     console.log('req.session.orderid', req.session.orderId);
     res.redirect('/checkout/verifyorder');
-
+    await Cart.updateOne({userId:userId},{$pullAll:{discount:neworder.discount}})
 
 }
 

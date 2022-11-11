@@ -72,13 +72,21 @@
                                             <td><%= product.category %></td>
                                             <!-- <td><%= product.description %></td> -->
                                             <td>
+                                                <% if(product.isDeleted == false){ %>
                                                 <div>
                                                     <a href="/admin/editproducts/<%= product._id %>"><button
                                                             class="btn btn-success btn-sm">Edit</button></a>
-                                                    <a href="/admin/deleteproducts/<%= product._id %>"><button
+                                                    <!-- <a href="/admin/deleteproducts/<%= product._id %>"><button
                                                             class="btn btn-danger btn-sm"
-                                                            onclick="return confirm('Do you want to delete <%= product.productname%>?')">Delete</button></a>
+                                                            onclick="return confirm('Do you want to delete <%= product.productname%>?')">Delete</button></a> -->
+                                                    <!-- <a href="/admin/deleteproducts/<%= product._id %>"> -->
+                                                    <button class="btn btn-danger btn-sm"
+                                                        onclick="return confirmDelete('<%= product._id %>')">Delete</button>
+                                                    <!-- </a> -->
                                                 </div>
+                                                <% } else { %>
+                                                <div>Deleted</div>
+                                                <% } %>
                                             </td>
                                         </tr>
                                         <% } %>
@@ -105,6 +113,31 @@
 
     <!-- JavaScript Libraries -->
     <%- include('../partials/libraries') %>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function confirmDelete(productid) {
+            swal({
+                    title: "Are you sure?",
+                    text: "Once deleted, you will not be able to recover this Product",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        swal("Poof! Product has been deleted!", {
+                            icon: "success",
+
+                        });
+                        window.location.href = `/admin/deleteproducts/${productid}`
+                    } else {
+                        swal("Your Product is safe!");
+                        return false
+                    }
+                });
+
+        }
+    </script>
 </body>
 
 </html>

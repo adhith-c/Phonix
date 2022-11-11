@@ -173,7 +173,10 @@ const deleteProducts = async (req, res) => {
         const {
             id
         } = req.params;
-        const deleteproducts = await Product.findByIdAndDelete(id);
+        // const deleteproducts = await Product.findByIdAndDelete(id);  permanent delete
+        const deleteproducts = await Product.findByIdAndUpdate(id, {
+            isDeleted: true
+        });
         console.log(deleteproducts);
         res.redirect('/admin/viewproducts');
     } catch (error) {

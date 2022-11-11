@@ -61,17 +61,7 @@ const OrderSchema = new Schema({
         }
 
     }],
-    // cartItems: [{
-    //     productId: {
-    //         type: ObjectId,
-    //         ref: 'Product',
-    //         required: true
-    //     },
-    //     productQuantity: {
-    //         type: Number,
-    //         required: true
-    //     }
-    // }],
+    
     totalAmount: {
         type: Number,
         required: true
@@ -94,7 +84,11 @@ const OrderSchema = new Schema({
     },
     paymentId: {
         type: String
-    }
+    },
+    discount: [{
+        code: { type: String },
+        amount:{type:Number}
+    }]
 
 }, {
     timestamps: true

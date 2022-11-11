@@ -188,7 +188,9 @@
                                                     <div><strong>PRICE</strong></div>
                                                 </div>
                                                 <div class="modal-subbody" id="orderdiv"></div>
-
+                                                <div><strong>Discount:</strong></div>
+                                                <div><strong class="order-subtotal" id="order-discount"></strong>
+                                                </div>
                                                 <div class="order-col">
                                                     <div><strong>TOTAL</strong></div>
                                                     <div><strong class="order-total" id="order-total"></strong>
@@ -274,6 +276,8 @@
     <script>
         function orders(id) {
             let divMain = document.getElementById('orderdiv');
+            let subTotal = document.getElementById('subtotal');
+            let Discount = document.getElementById('discount');
             let total = document.getElementById('order-total');
             let addressDiv = document.getElementById('addressdiv');
             let address = '';
@@ -302,6 +306,7 @@
                 <div>${p.productName} </div>
                 <div> ${p.productPrice}</div>
             </div>
+            
         </div>`
                     })
                     address += `<div>
@@ -313,6 +318,14 @@
         <div>${data.order.addressDetails.mobileNumber}</div>`
                     console.log('divs', divs)
                     divMain.innerHTML = divs;
+                    //                     if (data.order.discount.length > 0) {
+                    //                         Discount.innerHTML = `<div>Coupon
+                    //     Code:${data.order.discount[0].code}</div>
+                    // <div>Amount:${data.order.discount[0].amount}</div>`
+                    //                     } else {
+                    //                         Discount.innerHTML = `<div>Coupon Code:No Coupons Applied</div>
+                    // <div>Amount:-0</div>`
+                    //                     }
                     total.innerHTML = `${data.order.totalAmount}`
                     addressDiv.innerHTML = address
                     document.getElementById('paymentdiv').innerHTML = `${data.order.paymentStatus}`
