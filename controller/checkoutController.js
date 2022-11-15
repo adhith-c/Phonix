@@ -180,7 +180,7 @@ const postCheckout = async (req, res) => {
         totalAmount: req.body.totalAmount,
         paymentType: req.body.payment,
         orderNotes: req.body.orderNotes,
-        discount:discountItems
+        discount: discountItems
     })
     await neworder.save();
     req.session.orderId = neworder._id;
@@ -188,7 +188,13 @@ const postCheckout = async (req, res) => {
     req.session.save();
     console.log('req.session.orderid', req.session.orderId);
     res.redirect('/checkout/verifyorder');
-    await Cart.updateOne({userId:userId},{$pullAll:{discount:neworder.discount}})
+    await Cart.updateOne({
+        userId: userId
+    }, {
+        $pullAll: {
+            discount: neworder.discount
+        }
+    })
 
 }
 
@@ -256,15 +262,17 @@ const verifyOrder = async (req, res) => {
 
 
 const payment = async (req, res) => {
-    let orderId = req.session.orderId;
+    let orderedId = req.session.orderId;
+    let insertedId = orderedId;
     let userId = req.session.userId;
-    orderId = mongoose.Types.ObjectId(orderId);
+    orderedId = mongoose.Types.ObjectId(orderedId);
     userId = mongoose.Types.ObjectId(userId);
     const order = await Order.findOne({
-        _id: orderId
+        _id: orderedId
     });
     console.log("order in payment", order);
-    let insertId = order._id;
+    // let insertId = order._id;
+    console.log('insertId', insertedId);
     const {
         address,
         mobileNumber
@@ -285,13 +293,14 @@ const payment = async (req, res) => {
         const options = {
             amount: order.totalAmount * 100, // amount in the smallest currency unit   
             currency: "INR",
-            receipt: "" + insertId
+            receipt: "" + insertedId // "" + insertedId
         };
         const user = await User.findById(req.session.userId);
         const fullName = user.firstname + " " + user.lastname;
         const mobileNumber = user.addressDetails[0].mobileNumber;
         const userEmail = user.username;
         rzp.orders.create(options, function (err, order) {
+            console.log('err', err)
             const orderId = order.id;
             const userDetails = {
                 fullName,
@@ -317,7 +326,7 @@ const isApproved = async (req, res) => {
         userDetails,
         orderId
     } = req.body;
-    let hmac = crypto.createHmac('sha256', 'KxJSRwcupvXCp1Q2qtUi74xp');
+    let hmac = crypto.createHmac('sha256', process.env.key_secret);
     hmac = hmac.update(response.razorpay_order_id + "|" + response.razorpay_payment_id);
     hmac = hmac.digest('hex');
     //await cartModel.findByIdAndDelete(cartId);

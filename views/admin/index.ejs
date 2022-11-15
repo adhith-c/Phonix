@@ -72,8 +72,8 @@
 
             <input type="hidden" id="graph" value="<%= values %>">
             <input type="hidden" id="revenue" value="<%= revenue %>">
-                   <input type="hidden" id="graphlabels" value="<%= graphlabels %>">
-            
+            <input type="hidden" id="graphlabels" value="<%= graphlabels %>">
+
             <!-- Sales Chart Start -->
             <div class="container-fluid pt-4 px-4">
                 <div class="row g-4">
@@ -101,13 +101,14 @@
 
 
             <!-- Recent Sales Start -->
-            <div class="container-fluid pt-4 px-4">
+            <div class="container-fluid pt-4 px-4 html-content">
                 <div class="bg-secondary text-center rounded p-4">
                     <div class="d-flex align-items-center justify-content-between mb-4">
                         <h6 class="mb-0">Recent Salse</h6>
-                        <input type="button" value="Download PDF File" onclick="DownloadFile('Sample.pdf')" />
+                        <button class="btn rounded-pill btn-danger" onclick="CreatePDFfromHTML()">generate PDF</button>
+                        <!-- <input type="button" value="Download PDF File" onclick="DownloadFile('Sample.pdf')" /> -->
                     </div>
-                    <div class="table-responsive">
+                    <div class="table-responsive" id="editor">
                         <table class="table text-start align-middle table-bordered table-hover mb-0">
                             <thead>
                                 <tr class="text-white">
@@ -188,38 +189,66 @@
 
     <!-- JavaScript Libraries -->
     <%- include('../partials/libraries') %>
-    <script type="text/javascript">
-        function DownloadFile(fileName) {
-            //Set the File URL.
-            var url = "Files/" + fileName;
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+    <script>
+        // function DownloadFile(fileName) {
+        //     //Set the File URL.
+        //     var url = "Files/" + fileName;
 
-            //Create XMLHTTP Request.
-            var req = new XMLHttpRequest();
-            req.open("GET", url, true);
-            req.responseType = "blob";
-            req.onload = function () {
-                //Convert the Byte Data to BLOB object.
-                var blob = new Blob([req.response], {
-                    type: "application/octetstream"
-                });
+        //     //Create XMLHTTP Request.
+        //     var req = new XMLHttpRequest();
+        //     req.open("GET", url, true);
+        //     req.responseType = "blob";
+        //     req.onload = function () {
+        //         //Convert the Byte Data to BLOB object.
+        //         var blob = new Blob([req.response], {
+        //             type: "application/octetstream"
+        //         });
 
-                //Check the Browser type and download the File.
-                var isIE = false || !!document.documentMode;
-                if (isIE) {
-                    window.navigator.msSaveBlob(blob, fileName);
-                } else {
-                    var url = window.URL || window.webkitURL;
-                    link = url.createObjectURL(blob);
-                    var a = document.createElement("a");
-                    a.setAttribute("download", fileName);
-                    a.setAttribute("href", link);
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
+        //         //Check the Browser type and download the File.
+        //         var isIE = false || !!document.documentMode;
+        //         if (isIE) {
+        //             window.navigator.msSaveBlob(blob, fileName);
+        //         } else {
+        //             var url = window.URL || window.webkitURL;
+        //             link = url.createObjectURL(blob);
+        //             var a = document.createElement("a");
+        //             a.setAttribute("download", fileName);
+        //             a.setAttribute("href", link);
+        //             document.body.appendChild(a);
+        //             a.click();
+        //             document.body.removeChild(a);
+        //         }
+        //     };
+        //     req.send();
+        // };
+        function CreatePDFfromHTML() {
+            var HTML_Width = $(".html-content").width();
+            var HTML_Height = $(".html-content").height();
+            var top_left_margin = 15;
+            var PDF_Width = HTML_Width + (top_left_margin * 2);
+            var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+            var canvas_image_width = HTML_Width;
+            var canvas_image_height = HTML_Height;
+
+            var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+
+            html2canvas($(".html-content")[0]).then(function (canvas) {
+                var imgData = canvas.toDataURL("image/jpeg", 1.0);
+                var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+                pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width,
+                    canvas_image_height);
+                for (var i = 1; i <= totalPDFPages; i++) {
+                    pdf.addPage(PDF_Width, PDF_Height);
+                    pdf.addImage(imgData, 'JPG',
+                        top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width,
+                        canvas_image_height);
                 }
-            };
-            req.send();
-        };
+                pdf.save("Recent_Sales_Report.pdf");
+            });
+        }
     </script>
 </body>
 

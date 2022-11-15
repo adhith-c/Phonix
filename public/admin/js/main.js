@@ -70,11 +70,22 @@
 
     // Worldwide Sales Chart
     let array = document.getElementById('graph').value;
+    console.log('array', typeof (array))
+
+    let graphLabels = document.getElementById('graphlabels').value;
+    console.log(graphLabels)
+    graphLabels = JSON.parse(graphLabels)
+    console.log(graphLabels)
+    let label = []
+    for (let i = 0; i < graphLabels.length; i++) {
+        label.push(`${graphLabels[i].day}` + "/" + `${graphLabels[i].month}` + "/" + `${graphLabels[i].year}`);
+    }
+
     var ctx1 = $("#worldwide-sales").get(0).getContext("2d");
     var myChart1 = new Chart(ctx1, {
         type: "bar",
         data: {
-            labels: ["Day1", "Day2", "Day3", "Day4", "Day5", "Day6", "Day7"],
+            labels: [...label],
             datasets: [{
                 label: "Last 7 Days",
                 data: [...array],
@@ -90,16 +101,14 @@
     // Salse & Revenue Chart
     let sale = document.getElementById('graph').value;
     let revenue = document.getElementById('revenue').value;
-    let graphLabels = document.getElementById('graphlabels').value;
-    console.log(graphLabels)
-    graphLabels = JSON.parse(graphLabels)
-    console.log(graphLabels)
-    let label=[]
-    for (let i = 0; i < graphLabels.length; i++){
-        label.push(graphLabels[i]);
-    }
-    console.log(label)
-    
+
+    console.log('label', label)
+    let labelvar = [];
+    // label.forEach(p => {
+    //     labelvar.push(p);
+    // })
+    // console.log('labelvar', labelvar)
+
     var ctx2 = $("#salse-revenue").get(0).getContext("2d");
     var myChart2 = new Chart(ctx2, {
         type: "line",
