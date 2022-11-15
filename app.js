@@ -142,6 +142,6 @@ app.use((err, req, res, next) => {
 
 })
 
-app.listen(7000, (req, res) => {
+app.listen(3000, (req, res) => {
     console.log(`http://localhost:7000`)
 })
