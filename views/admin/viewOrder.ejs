@@ -105,7 +105,10 @@
                                                                         </div>
                                                                         <div class="modal-subbody" id="orderdiv">
                                                                         </div>
-
+                                                                        <div>
+                                                                            <strong>Discount</strong>
+                                                                            <div id="discountdiv"></div>
+                                                                        </div>
                                                                         <div class="order-col">
                                                                             <div><strong>TOTAL</strong></div>
                                                                             <div><strong class="order-total"
@@ -140,11 +143,12 @@
                                                 </div>
                                             </td>
                                             <td>
+                                                <% if(item.orderStatus !="cancelled"){ %>
                                                 <div>
                                                     <a href="/admin/editorders/<%= item._id %>"><button
                                                             class="btn btn-success btn-sm">Edit</button></a>
-
                                                 </div>
+                                                <% } %>
                                             </td>
 
                                         </tr>
@@ -186,8 +190,10 @@
             let divMain = document.getElementById('orderdiv');
             let total = document.getElementById('order-total');
             let addressDiv = document.getElementById('addressdiv');
+            let DiscountDiv = document.getElementById('discountdiv');
             let address = '';
             let divs = '';
+            let discdivs = '';
             console.log(id);
             fetch('/orderfetch', {
                     method: 'post',
@@ -214,6 +220,18 @@
             </div>
         </div>`
                     })
+                    if (data.order.discount.length > 0) {
+                        data.order.discount.forEach(p => {
+                            discdivs += `<div>Code:${p.code}</div>
+                            <div>Amount:${p.amount}</div>`
+                        })
+                        DiscountDiv.innerHTML = discdivs;
+                    } else {
+                        discdivs += `<div>CodeNill</div>
+                          <div>Amount:Nill</div>`
+
+                        DiscountDiv.innerHTML = discdivs;
+                    }
                     address += `<div>
             ${data.order.addressDetails.address}
         </div>

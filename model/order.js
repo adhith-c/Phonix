@@ -61,7 +61,7 @@ const OrderSchema = new Schema({
         }
 
     }],
-    
+
     totalAmount: {
         type: Number,
         required: true
@@ -86,9 +86,17 @@ const OrderSchema = new Schema({
         type: String
     },
     discount: [{
-        code: { type: String },
-        amount:{type:Number}
-    }]
+        code: {
+            type: String
+        },
+        amount: {
+            type: Number
+        }
+    }],
+    isComplete: {
+        type: Boolean,
+        default: false
+    }
 
 }, {
     timestamps: true

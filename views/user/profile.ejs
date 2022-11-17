@@ -76,7 +76,7 @@
                                     Edit
                                 </button>
                                 <button type="button" class="btn-xs btn-danger" data-toggle="modal"
-                                    data-target="#deleteaddress">Delete</button>
+                                    data-target="#deleteaddress<%= address._id %>">Delete</button>
                             </div>
                         </div>
                         <% num++; }) %>
@@ -260,10 +260,12 @@
                             <input class="input" type="text" name="country" placeholder="Country" required>
                         </div>
                         <div class="form-group">
-                            <input class="input" type="text" name="pinCode" placeholder="ZIP Code" required>
+                            <input class="input" type="text" name="pinCode" placeholder="ZIP Code" required
+                                pattern="[0-9]{6,6}" title="6 digit Pincode">
                         </div>
                         <div class="form-group">
-                            <input class="input" type="tel" name="mobileNumber" placeholder="Mobile Number" required>
+                            <input class="input" type="tel" name="mobileNumber" placeholder="Mobile Number" required
+                                pattern="[0-9]{10,10}" title="10 digit PhoneNumber">
                         </div>
                         <div class="text-center">
                             <button type="submit" class="primary-btn order-submit text-center">Submit</button>
@@ -280,8 +282,9 @@
     <!-- /ADD ADDRESS Modal -->
 
     <!-- /DELETE ADDRESS Modal -->
-    <div class="modal fade" id="deleteaddress" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
+    <% user.addressDetails.forEach(address=>{ %>
+    <div class="modal fade" id="deleteaddress<%= address._id %>" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">
@@ -295,8 +298,8 @@
                 </div>
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-primary" <% user.addressDetails.forEach(address=>{ %>
-                        onclick="deleteAddress('<%= address._id %>')" <% }) %>>Delete</button>
+                    <button type="button" class="btn btn-primary"
+                        onclick="deleteAddress('<%= address._id %>')">Delete</button>
 
 
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -304,6 +307,7 @@
             </div>
         </div>
     </div>
+    <% }) %>
     <!-- /DELETE ADDRESS Modal -->
 
     <!-- jQuery Plugins -->
@@ -343,12 +347,12 @@
                </div>
                <div class="form-group">
                    <input class="input" type="text" name="pinCode" value="${data.address.addressDetails.pinCode}""
-                       placeholder="ZIP Code" required>
+                       placeholder="ZIP Code" required pattern="[0-9]{6,6}" title="6 digit Pincode">
                </div>
                <div class="form-group">
                    <input class="input" type="tel" name="mobileNumber"
                        value="${data.address.addressDetails.mobileNumber}""
-                       placeholder="Mobile Number" required>
+                       placeholder="Mobile Number" required pattern="[0-9]{10,10}" title="10 digit PhoneNumber">
                </div>
                <div class="text-center">
                    <button class="primary-btn order-submit text-center">Submit</button>

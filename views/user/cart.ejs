@@ -347,7 +347,6 @@
                         prodid
                     })
                 }).then(res => res.json()).then(data => {
-                    alert('promise sucess');
                     if (data.msg) {
                         aler(data.msg);
                     }
@@ -442,7 +441,6 @@
 
     <script type="text/javascript">
         function delfromcart(proid) {
-            alert('hi delfromcart')
             $.ajax({
                 url: '/cart/delfromcart',
                 data: {

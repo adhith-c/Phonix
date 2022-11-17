@@ -282,6 +282,13 @@ const payment = async (req, res) => {
     //     key_secret: "KxJSRwcupvXCp1Q2qtUi74xp",
     // })
     if (order.paymentType == 'COD') {
+        await Order.updateOne({
+            _id: orderedId
+        }, {
+            $set: {
+                isComplete: true
+            }
+        });
         console.log("COD");
         await Cart.findOneAndDelete({
             userId: userId
@@ -335,7 +342,8 @@ const isApproved = async (req, res) => {
         await Order.findByIdAndUpdate(successOrderId, {
             orderStatus: 'approved',
             paymentStatus: 'paid',
-            paymentId: orderId
+            paymentId: orderId,
+            isComplete: true
         });
         req.flash('orderId', successOrderId);
         res.send({

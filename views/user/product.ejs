@@ -166,15 +166,14 @@
 									<span class="qty-down">-</span>
 								</div>
 							</div>
-							<button class="add-to-cart-btn"
-								onclick="location.href='/cart/addtocart/<%= products._id %>'"><i
+							<button class="add-to-cart-btn" onclick="addToCart('<%= products._id %>')"><i
 									class="fa fa-shopping-cart"></i> add to cart</button>
 						</div>
 
 						<ul class="product-btns">
 							<li><a href="/wishlist/addtowishlist/<%= products._id %>"><i class="fa fa-heart-o"></i> add
 									to wishlist</a></li>
-							<li><a href="/addtocompare"><i class="fa fa-exchange"></i> add to compare</a></li>
+
 						</ul>
 
 						<ul class="product-links">
@@ -460,21 +459,19 @@
 							<h3 class="product-name"><a href="#"><%= product.productname %></a></h3>
 							<h4 class="product-price"><%= product.price %><del class="product-old-price">$990.00</del>
 							</h4>
-							<div class="product-rating">
+							<!-- <div class="product-rating">
 								<i class="fa fa-star"></i>
 								<i class="fa fa-star"></i>
 								<i class="fa fa-star"></i>
 								<i class="fa fa-star"></i>
 								<i class="fa fa-star"></i>
-							</div>
+							</div> -->
 							<div class="product-btns">
 								<button class="add-to-wishlist"
 									onclick="location.href='/wishlist/addtowishlist/<%= product._id %>'"><i
 										class="fa fa-heart-o"></i><span class="tooltipp">add to
 										wishlist</span></button>
-								<button class="add-to-compare" href="#"><i class="fa fa-exchange"></i><span
-										class="tooltipp">add to
-										compare</span></button>
+
 
 								<button class="quick-view"
 									onclick="location.href='/products/viewproduct/<%= product._id %>'"><i
@@ -484,8 +481,7 @@
 							</div>
 						</div>
 						<div class="add-to-cart">
-							<button class="add-to-cart-btn"
-								onclick="location.href='/cart/addtocart/<%= product._id %>'"><i
+							<button class="add-to-cart-btn" onclick="addToCart('<%= product._id %>')"><i
 									class="fa fa-shopping-cart"></i> add to
 								cart</button>
 						</div>
@@ -550,6 +546,22 @@
 	<script src="/js/nouislider.min.js"></script>
 	<script src="/js/jquery.zoom.min.js"></script>
 	<script src="/js/main.js"></script>
+	<script>
+		function addToCart(productId) {
+			fetch('/cart/addtocart', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					productId
+				})
+			}).then(res => res.json()).then(data => {
+
+				window.location.href = "/cart";
+			})
+		}
+	</script>
 
 </body>
 

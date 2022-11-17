@@ -21,62 +21,66 @@ const product = require('../model/product');
 const user = require('../model/user');
 
 const getWishlist = async (req, res) => {
-    let userId = req.session.userId;
-    userId = mongoose.Types.ObjectId(userId);
-    console.log('userId', userId);
-    const categories = await Category.find({});
+    if (req.session.userId) {
+        let userId = req.session.userId;
+        userId = mongoose.Types.ObjectId(userId);
+        console.log('userId', userId);
+        const categories = await Category.find({});
 
-    const userfind = await User.findOne({
-        _id: userId
-    });
-    console.log('userfind', userfind);
-    const wishlist = await Wishlist.findOne({
-        userId: userId
-    }).populate({
-        path: "userId",
-        path: "Items",
-        populate: {
-            path: "productId"
-        }
-    });
-    let wishlistCount = await Wishlist.aggregate([{
-        $match: {
-            userId
-        }
-    }, {
-        $project: {
-            count: {
-                $size: "$Items"
-            }
-        }
-    }]);
-    let cartCount = await Cart.aggregate([{
-        $match: {
-            userId
-        }
-    }, {
-        $project: {
-            _id: 0,
-            count: {
-                $size: "$cartItems"
-            }
-        }
-    }]);
-    if (wishlist) {
-        let items = wishlist.Items;
-        res.render('user/wishlist', {
-            items,
-            wishlistCount,
-            cartCount,
-            categories
+        const userfind = await User.findOne({
+            _id: userId
         });
+        console.log('userfind', userfind);
+        const wishlist = await Wishlist.findOne({
+            userId: userId
+        }).populate({
+            path: "userId",
+            path: "Items",
+            populate: {
+                path: "productId"
+            }
+        });
+        let wishlistCount = await Wishlist.aggregate([{
+            $match: {
+                userId
+            }
+        }, {
+            $project: {
+                count: {
+                    $size: "$Items"
+                }
+            }
+        }]);
+        let cartCount = await Cart.aggregate([{
+            $match: {
+                userId
+            }
+        }, {
+            $project: {
+                _id: 0,
+                count: {
+                    $size: "$cartItems"
+                }
+            }
+        }]);
+        if (wishlist) {
+            let items = wishlist.Items;
+            res.render('user/wishlist', {
+                items,
+                wishlistCount,
+                cartCount,
+                categories
+            });
+        } else {
+            res.render('user/wishlist', {
+                items: '',
+                wishlistCount,
+                cartCount,
+                categories
+            });
+        }
     } else {
-        res.render('user/wishlist', {
-            items: '',
-            wishlistCount,
-            cartCount,
-            categories
-        });
+        res.redirect('/login');
     }
 
 
@@ -151,16 +155,11 @@ const addToWishlist = async (req, res) => {
             }
         }]);
 
-        // res.send({
-        //     wishlistCount
-        // });
+        // res.send({ wishlistCount });
         // console.log(wishlistCount);
     } else {
-        const msg = 'please login to continue';
-        res.send({
-            msg
-        });
-        return;
+        res.redirect('/login');
+        //const msg = 'please login to continue';res.send({ msg });return;
     }
 }
 

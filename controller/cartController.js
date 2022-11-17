@@ -92,47 +92,16 @@ const getCart = async (req, res) => {
     }
 
 }
-// const getCart = async (req, res) => {
-//     // swal("hello world");
-//     const userfind = await User.find({
-//         _id: req.session.userId
-//     });
-//     let id = req.session.userId;
-//     id = mongoose.Types.ObjectId(id);
-//     let cart = await Cart.findOne({
-//         userId: id
-//     }).populate({
-//         path: "userId",
-//         path: "cartItems",
-//         populate: {
-//             path: "productId"
-//         }
-//     });
 
-//     let items = cart.cartItems;
-//     for (let item of items) {
-//         total += item.productQuantity * item.productId.price;
-//     }
-//     console.log(total);
-//     totalAmount = total;
-//     console.log('cart', cart)
-
-//     console.log('cart items', items);
-//     //console.log('cart items prod name:', cart.cartItems.productId)
-//     console.log('cart details', cart);
-//     res.render('user/cart', {
-//         items
-//     });
-// }
 
 const addToCart = async (req, res) => {
     if (req.session.username) {
-        console.log('req.session.username', req.session.username);
-        let productId = req.params.id;
-        console.log('productid', productId);
+        //let productId = req.params.id;
+        let productId = req.body.productId;
+        console.log('productId', productId);
+        console.log('reqqq boddyyy', req.body);
         productId = new mongoose.Types.ObjectId(productId);
         let userId = req.session.userId;
-        console.log('req.session.userId', req.session.userId);
         let userExist = await Cart.findOne({
             userId
         });
@@ -173,8 +142,11 @@ const addToCart = async (req, res) => {
                         }
                     }
                 });
-                res.redirect('/cart');
+
             }
+            res.send({
+                msg: 'Added to Cart successfully'
+            })
         } else {
             try {
                 let cart = new Cart({
@@ -185,12 +157,16 @@ const addToCart = async (req, res) => {
                     }]
                 });
                 await cart.save();
+                res.send({
+                    msg: 'Added to Cart successfully'
+                })
             } catch (err) {
                 const msg = 'cart adding failed';
                 console.log('cart', cart)
                 // res.send({
                 //     msg
                 // });
+
             }
         }
         let cartCount = await Cart.aggregate([{
@@ -208,12 +184,10 @@ const addToCart = async (req, res) => {
         //     cartCount
         // });
     } else {
-        const msg = 'please login to continue';
-        res.send({
-            msg
-        });
-        return;
+        res.redirect('/login');
+        // const msg = 'please login to continue'; res.send({ msg});return;
     }
+
 }
 
 const addToExistingCart = async (req, res) => {
@@ -295,103 +269,14 @@ const addToExistingCart = async (req, res) => {
                 }
             }
         }]);
-        // res.send({
-        //     cartCount
-        // });
+        // res.send({ cartCount });
     } else {
-        const msg = 'please login to continue';
-        res.send({
-            msg
-        });
-        return;
+        res.redirect('/login');
+        // const msg = 'please login to continue'; res.send({ msg});return;
     }
 }
 
 const decrementFromCart = async (req, res) => {
-
-    // if (req.session.username) {
-    //     let productId = req.body.prodid;
-    //     console.log('decrement prodid is', productId);
-    //     productId = mongoose.Types.ObjectId(productId);
-    //     console.log('decrement prodid is', productId);
-
-    //     let userId = req.session.userId;
-    //     userId = mongoose.Types.ObjectId(userId);
-    //     console.log('decrement userid is', userId);
-    //     let userExist = await Cart.findOne({
-    //         userId
-    //     });
-    //     console.log('user xsist', userExist);
-    //     if (userExist) {
-
-    //         let productExist = await Cart.findOne({
-    //             $and: [{
-    //                 userId
-    //             }, {
-    //                 cartItems: {
-    //                     $elemMatch: {
-    //                         productId
-    //                     }
-    //                 }
-    //             }]
-    //         });
-    //         console.log('prdct xsist ', productExist);
-    //         if (productExist) {
-    //             await Cart.findOneAndUpdate({
-    //                 $and: [{
-    //                     userId
-    //                 }, {
-    //                     "cartItems.productId": productId
-    //                 }]
-    //             }, {
-    //                 $inc: {
-    //                     "cartItems.$.productQuantity": -1
-    //                 }
-    //             });
-    //             let cart = await Cart.findOne({
-    //                 userId
-    //             });
-    //             console.log('after decrement ', cart);
-
-    //         } else {
-    //             // await Cart.updateOne({
-    //             //     userId
-    //             // }, {
-    //             //     $push: {
-    //             //         cartItems: {
-    //             //             productId,
-    //             //             productQuantity: 1
-    //             //         }
-    //             //     }
-    //             // });
-    //             console.log('error vaneee');
-    //         }
-    //     } else {
-    //         const msg = 'Item failed to find';
-    //         res.send({
-    //             msg
-    //         });
-    //         return;
-    //     }
-    //     let cartCount = await Cart.aggregate([{
-    //         $match: {
-    //             userId
-    //         }
-    //     }, {
-    //         $project: {
-    //             count: {
-    //                 $size: "$cartItems"
-    //             }
-    //         }
-    //     }]);
-
-    // } else {
-    //     const msg = 'please login to continue';
-    //     res.send({
-    //         msg
-    //     });
-    //     return;
-    // }
     if (req.session.username) {
         let productId = req.body.prodid;
         console.log('decrement prodid is', productId);
@@ -401,25 +286,8 @@ const decrementFromCart = async (req, res) => {
         let userId = req.session.userId;
         userId = mongoose.Types.ObjectId(userId);
         console.log('decrement userid is', userId);
-        // let userExist = await Cart.findOne({
-        //     userId
-        // });
-
-
-
-        //  let productExist = await Cart.findOne({
-        //      $and: [{
-        //          userId
-        //      }, {
-        //          cartItems: {
-        //              $elemMatch: {
-        //                  productId
-        //              }
-        //          }
-        //      }]
-        //  });
-
-
+        // let userExist = await Cart.findOne({userId});
+        //  let productExist = await Cart.findOne({$and: [{ userId  }, { cartItems: { $elemMatch: {  productId } } }] });
         await Cart.findOneAndUpdate({
             $and: [{
                 userId
@@ -437,11 +305,8 @@ const decrementFromCart = async (req, res) => {
                 "cartItems.$.productQuantity": -1
             }
         });
-        // let cart = await Cart.findOne({
-        //     userId
-        // });
+        // let cart = await Cart.findOne({userId});
         // console.log('after decrement ', cart);
-
         let cartCount = await Cart.aggregate([{
             $match: {
                 userId
@@ -456,15 +321,9 @@ const decrementFromCart = async (req, res) => {
         res.send({
             cartCount
         });
-
-
-
     } else {
-        const msg = 'please login to continue';
-        res.send({
-            msg
-        });
-        return;
+        res.redirect('/login');
+        // const msg = 'please login to continue'; res.send({ msg});return;
     }
 }
 
@@ -522,7 +381,7 @@ const checkCoupon = async (req, res) => {
         if (reduce > coupon.maxLimit) {
             grandTotal -= coupon.maxLimit;
             reduce = coupon.maxLimit;
-            
+
         } else {
             grandTotal -= reduce;
         }
@@ -537,7 +396,7 @@ const checkCoupon = async (req, res) => {
             amount: reduce
         });
         await cart.save();
-        console.log('discccccccccccccccccccccccccccccccccccccc caaaaaaaaaaaat', cart);
+        //console.log('discccccccccccccccccccccccccccccccccccccc caaaaaaaaaaaat', cart);
         res.send({
             reduce,
             grandTotal
@@ -550,8 +409,6 @@ const checkCoupon = async (req, res) => {
     }
 
 }
-
-
 
 module.exports = {
     getCart,

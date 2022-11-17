@@ -329,7 +329,8 @@ const getOrders = async (req, res) => {
     })
     if (order) {
         const orders = await Order.find({
-            userId
+            userId: userId,
+            isComplete: true
         }).populate({
             path: "orderItems",
             populate: {
