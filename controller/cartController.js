@@ -162,11 +162,6 @@ const addToCart = async (req, res) => {
                 })
             } catch (err) {
                 const msg = 'cart adding failed';
-                console.log('cart', cart)
-                // res.send({
-                //     msg
-                // });
-
             }
         }
         let cartCount = await Cart.aggregate([{
@@ -180,9 +175,6 @@ const addToCart = async (req, res) => {
                 }
             }
         }]);
-        // res.send({
-        //     cartCount
-        // });
     } else {
         res.redirect('/login');
         // const msg = 'please login to continue'; res.send({ msg});return;
@@ -247,7 +239,6 @@ const addToExistingCart = async (req, res) => {
                     productQuantity: 1
                 }]
             });
-            // cart.bill += quantity * price;
             try {
                 await cart.save();
             } catch (err) {
@@ -286,8 +277,6 @@ const decrementFromCart = async (req, res) => {
         let userId = req.session.userId;
         userId = mongoose.Types.ObjectId(userId);
         console.log('decrement userid is', userId);
-        // let userExist = await Cart.findOne({userId});
-        //  let productExist = await Cart.findOne({$and: [{ userId  }, { cartItems: { $elemMatch: {  productId } } }] });
         await Cart.findOneAndUpdate({
             $and: [{
                 userId
@@ -305,8 +294,6 @@ const decrementFromCart = async (req, res) => {
                 "cartItems.$.productQuantity": -1
             }
         });
-        // let cart = await Cart.findOne({userId});
-        // console.log('after decrement ', cart);
         let cartCount = await Cart.aggregate([{
             $match: {
                 userId
@@ -369,11 +356,9 @@ const checkCoupon = async (req, res) => {
         subTotal,
         grandTotal
     } = obj;
-    // const totalAmount = subTotal;
     const coupon = await Coupon.findOne({
         couponName
     })
-    // console.log(coupon)
     if (coupon) {
         let discount = coupon.discount;
         let reduce = subTotal * discount / 100;
@@ -385,9 +370,6 @@ const checkCoupon = async (req, res) => {
         } else {
             grandTotal -= reduce;
         }
-        // const final = total;
-        //console.log('total' + total);
-        //total = totalAmount;
         const cart = await Cart.findOne({
             userId: userId
         });
@@ -396,7 +378,6 @@ const checkCoupon = async (req, res) => {
             amount: reduce
         });
         await cart.save();
-        //console.log('discccccccccccccccccccccccccccccccccccccc caaaaaaaaaaaat', cart);
         res.send({
             reduce,
             grandTotal

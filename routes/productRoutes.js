@@ -9,6 +9,4 @@ router.get('/viewproduct/:id', productController.viewProductUser);
 // router.get('/logout', adminController.logout);
 
 
-
-
 module.exports = router;

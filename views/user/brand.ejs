@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-    <title>Electro - HTML Ecommerce Template</title>
+    <title>Phonix</title>
 
     <!-- Google font -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
@@ -51,7 +51,7 @@
                 <!-- NAV -->
                 <ul class="main-nav nav navbar-nav">
                     <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">Hot Deals</a></li>
+
                     <% for(let brand of brands){ %>
                     <li><a href="/brands/<%= brand._id %>"><%= brand.brandName %></a></li>
                     <% } %>

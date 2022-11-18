@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const passport = require('passport');
-const swal = require('sweetalert');
-const nodemailer = require('nodemailer');
 const User = require('../model/user');
 const Product = require('../model/product');
 const Cart = require('../model/cart');
@@ -137,7 +134,6 @@ const addToWishlist = async (req, res) => {
                 await wishlist.save();
             } catch (err) {
                 const msg = 'wishlist adding failed';
-                //console.log('cart', cart)
                 res.send({
                     msg
                 });
@@ -154,9 +150,6 @@ const addToWishlist = async (req, res) => {
                 }
             }
         }]);
-
-        // res.send({ wishlistCount });
-        // console.log(wishlistCount);
     } else {
         res.redirect('/login');
         //const msg = 'please login to continue';res.send({ msg });return;

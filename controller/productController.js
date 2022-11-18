@@ -152,11 +152,6 @@ const putEditProduct = async (req, res) => {
         );
         console.log(product);
         product.image.push(...phots);
-        //     req.files.map((f) => ({
-        //     url: f.path,
-        //     filename: f.filename,
-        // }));
-
         product.save();
         req.flash('success', 'product edited successfully');
         res.redirect('/admin/viewproducts');

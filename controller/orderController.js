@@ -77,16 +77,7 @@ const putEditOrder = async (req, res) => {
 const getOrderItems = async (req, res) => {
     let orderId = req.body.id;
     orderId = mongoose.Types.ObjectId(orderId);
-    // let orderItems = await Order.aggregate([{
-    //     $match: {
-    //         _id: orderId
-    //     }
-    // }, {
-    //     $project: {
-    //         orderItems: 1,
-    //         _id: 0
-    //     }
-    // }])
+
     const orderItems = await Order.find({
         _id: orderId
     }, {

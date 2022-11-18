@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const passport = require('passport');
-const swal = require('sweetalert');
-const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const Razorpay = require('razorpay');
 const {
@@ -43,10 +40,6 @@ const getValFromCart = async (req, res) => {
     })
 }
 const getCheckout = async (req, res) => {
-    // console.log('discCart', discCart)
-    // console.log('subCart', subCart)
-    // console.log('grandCart', grandCart)
-    console.log(req.session.userId)
     const user = await User.findOne({
         _id: req.session.userId
     });
@@ -62,10 +55,7 @@ const getCheckout = async (req, res) => {
             path: "productId"
         }
     });
-
-    console.log('checkout:', cart);
     const items = cart.cartItems;
-    console.log('cart.cartItems', items);
     let cartCount = await Cart.aggregate([{
         $match: {
             userId
@@ -127,9 +117,7 @@ const postCheckout = async (req, res) => {
             productQuantity: items.productQuantity,
             productPrice: items.productId.price
         };
-        //console.log('each item:', eachItem);
         orderItems.push(eachItem);
-        //console.log('items:', items);
     });
     const user = await User.findOne({
         _id: userId
@@ -151,18 +139,6 @@ const postCheckout = async (req, res) => {
 
     ])
     addressDetail = addressDetail[0].addressDetails;
-    // console.log('dheeeraj orusambava', addressDetail);
-    // const addressDetail = await User.findOne({
-    //     $and: [{
-    //         _id: userId
-    //     }, {
-    //         addressDetails: {
-    //             $elemMatch: {
-    //                 Address
-    //             }
-    //         }
-    //     }]
-    // });
     console.log('address drtails', addressDetail);
     let neworder = new Order({
         userId: userId,
@@ -217,10 +193,6 @@ const verifyOrder = async (req, res) => {
         orderItems.push(eachItem);
         console.log('items:', items);
     });
-    // console.log('order:', order);
-    // console.log('discCart', discCart)
-    // console.log('subCart', subCart)
-    // console.log('grandCart', grandCart)
     const categories = await Category.find({});
     let userId = req.session.userId;
     userId = mongoose.Types.ObjectId(userId);
@@ -277,10 +249,6 @@ const payment = async (req, res) => {
         address,
         mobileNumber
     } = req.body;
-    // const rzp = new Razorpay({
-    //     key_id: "rzp_test_EvbB2VktzeIYpS",
-    //     key_secret: "KxJSRwcupvXCp1Q2qtUi74xp",
-    // })
     if (order.paymentType == 'COD') {
         await Order.updateOne({
             _id: orderedId

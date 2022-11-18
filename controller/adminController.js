@@ -108,9 +108,7 @@ const getDashboard = async (req, res, next) => {
                 count: {
                     $sum: 1
                 }
-
             }
-
         }, {
             $project: {
                 totalPrice: 1,
@@ -141,14 +139,6 @@ const getDashboard = async (req, res, next) => {
         }
 
     });
-    // const categorySale = await Order.find({}).populate({
-    //     path: "orderItems",
-    //     populate: {
-    //         path: "productId",
-    //     }
-    // }).find({
-    //     "orderItems.$.productId.category": 1
-    // });
     const categorySale = await Order.aggregate([{
             $match: {
                 orderStatus: {
@@ -165,9 +155,6 @@ const getDashboard = async (req, res, next) => {
                 },
                 productId: '$orderItems.productId',
                 _id: 0
-                // "orderItems.productId": 1,
-                // "orderItems.productQuantity": 1,
-                // "orderItems.productPrice": 1,
             }
         },
         {
@@ -189,18 +176,11 @@ const getDashboard = async (req, res, next) => {
         },
         {
             $group: {
-                _id: '$categoryName'
-                    // category: "$products.category",
-                    // totalSaleAmount: {
-                    //     $sum: {
-                    //         $multiply: ["$orderItems.productPrice", "$orderItems.productQuantity"]
-                    //     }
-                    ,
+                _id: '$categoryName',
                 count: {
                     $sum: '$total' // $sum: "$orderItems.productQuantity"
                 }
             }
-
         }
     ]);
     let label = []
@@ -211,7 +191,6 @@ const getDashboard = async (req, res, next) => {
         categoryValues.push(g.count);
         label.push(g._id)
     })
-    console.log(label)
     const paymentStats = await Order.aggregate([{
         $group: {
             _id: "$paymentType",
@@ -229,7 +208,6 @@ const getDashboard = async (req, res, next) => {
     paymentStats.forEach((payment) => {
         paymentGraph.push(payment.count)
     })
-    //console.log(paymentGraph)
     res.render('admin/index', {
         todaySale,
         totalSale,
@@ -257,8 +235,6 @@ const blockUnblockUser =
             id = mongoose.Types.ObjectId(id);
             let status = blockuser.status;
             if (status == 'active') {
-                // blockuser.isBlocked = true;
-                // blockuser.status = 'blocked';
                 await User.findByIdAndUpdate(id, {
                     isBlocked: true,
                     status: 'blocked'
@@ -327,7 +303,6 @@ const deleteCoupon = async (req, res) => {
     } = req.params;
     const deletecoupon = await Coupon.findByIdAndDelete(id);
     console.log(deletecoupon);
-    //await brands.save();
     res.redirect('/admin/viewcoupons');
 }
 
@@ -345,9 +320,7 @@ const getNewBanner = async (req, res) => {
 }
 
 const postNewBanner = async (req, res) => {
-    // console.log(req.body)
     const obj = JSON.parse(JSON.stringify(req.body));
-    // console.log(obj)
     const banner = new Banner(obj);
     banner.image = req.files.map(file => ({
         url: file.path,

@@ -98,8 +98,6 @@ const home = async (req, res) => {
         });
 
     }
-    // console.log('product.image[0]', newProducts)
-    // console.log('user session', req.session);
 }
 
 const registerPage = (req, res) => {
@@ -154,7 +152,7 @@ const userRegister = async (req, res) => {
     const registerUser = await User.register(user, password);
     console.log(registerUser);
     req.flash('success', 'Welcome');
-    //res.redirect('/user/lo');
+
     // send mail with defined transport object
     var mailOptions = {
         to: req.body.username,
@@ -168,8 +166,6 @@ const userRegister = async (req, res) => {
         }
         console.log('Message sent: %s', info.messageId);
         console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
-
-
         //res.redirect('user/login')
     });
 
@@ -201,7 +197,6 @@ const otpPage = async (req, res) => {
 
             });
         }
-        //res.send("You has been successfully registered");
         res.render('user/login');
     } else {
         res.render('user/otp', {
@@ -215,7 +210,6 @@ const otpPage = async (req, res) => {
 }
 
 const submitLogin = async (req, res) => {
-    // console.log('submit')
     const {
         username,
         password
@@ -236,7 +230,6 @@ const submitLogin = async (req, res) => {
         console.log('username', username);
         req.flash('error', 'Not verified user');
         // res.redirect('/register');
-
         var mailOptions = {
             to: req.body.username,
             subject: "Otp for registration is: ",
@@ -253,11 +246,9 @@ const submitLogin = async (req, res) => {
             pass: {
                 msg: '',
                 email
-
             }
         });
     }
-
 }
 
 
@@ -295,7 +286,6 @@ const getProfile = async (req, res) => {
             }
         }
     }]);
-    //console.log(cartCount, wishlistCount)
     res.render('user/profile', {
         user,
         categories,
@@ -337,7 +327,6 @@ const getOrders = async (req, res) => {
                 path: "productId"
             }
         });
-        // console.log('orderitems', orders[0].orderitems);
         for (var i = 0; i < orders.length; i++) {
             orders[i].orderItems.forEach((element, index) => {
                 console.log(element);
@@ -416,9 +405,7 @@ const getAddress = async (req, res) => {
     let addressId = req.body.addressid;
     let userId = req.session.userId;
     userId = mongoose.Types.ObjectId(userId);
-    //console.log(addressId)
     addressId = mongoose.Types.ObjectId(addressId);
-    // 
     const address = await User.aggregate([{
         $match: {
             _id: userId
@@ -547,6 +534,4 @@ module.exports = {
     editAddress,
     deleteAddress,
     getCategories
-
-
 }
