@@ -166,9 +166,10 @@
                         <!-- <div class="col-lg-6 col-md-6 col-sm-6"> -->
                         <div class="btn">
                             <!-- <a href="#">Update cart</a> -->
-                            <button class="btn btn-success"
-                                onclick="location.href='/cart/addtocart/<%=item.productId._id %>'">Add TO Cart</button>
+                            <button class="btn btn-success" onclick="addToCart('<%= item.productId._id %>')">Add TO
+                                Cart</button>
                         </div>
+
                         <!-- </div> -->
                     </div>
                     <div class="col-md-2"> <span onclick="delfromwishlist('<%=item.productId._id %>')"><i
@@ -247,6 +248,21 @@
                 success: location.reload()
             })
 
+        }
+
+        function addToCart(productId) {
+            fetch('/cart/addtocart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    productId
+                })
+            }).then(res => res.json()).then(data => {
+
+                window.location.href = "/cart";
+            })
         }
     </script>
 </body>
