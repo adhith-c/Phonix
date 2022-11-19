@@ -447,8 +447,12 @@
 					productId
 				})
 			}).then(res => res.json()).then(data => {
+				if (data.cart == true) {
+					window.location.href = "/cart";
+				} else {
+					window.location.href = "/login";
+				}
 
-				window.location.href = "/cart";
 			})
 		}
 	</script>

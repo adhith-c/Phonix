@@ -26,76 +26,78 @@ const {
 let total = 0;
 let totalAmount;
 const getCart = async (req, res) => {
-    const categories = await Category.find({});
-    const userfind = await User.find({
-        _id: req.session.userId
-    });
-    let id = req.session.userId;
-    id = mongoose.Types.ObjectId(id);
-    let cart = await Cart.findOne({
-        userId: id
-    }).populate({
-        path: "userId",
-        path: "cartItems",
-        populate: {
-            path: "productId"
-        }
-    });
-    let cartCount = await Cart.aggregate([{
-        $match: {
+    if (req.session.userId) {
+        const categories = await Category.find({});
+        const userfind = await User.find({
+            _id: req.session.userId
+        });
+        let id = req.session.userId;
+        id = mongoose.Types.ObjectId(id);
+        let cart = await Cart.findOne({
             userId: id
-        }
-    }, {
-        $project: {
-            _id: 0,
-            count: {
-                $size: "$cartItems"
+        }).populate({
+            path: "userId",
+            path: "cartItems",
+            populate: {
+                path: "productId"
             }
-        }
-    }]);
-    let wishlistCount = await Wishlist.aggregate([{
-        $match: {
-            userId: id
-        }
-    }, {
-        $project: {
-            count: {
-                $size: "$Items"
+        });
+        let cartCount = await Cart.aggregate([{
+            $match: {
+                userId: id
             }
-        }
-    }]);
-    if (cart) {
-        let items = cart.cartItems;
-        for (let item of items) {
-            total += item.productQuantity * item.productId.price;
-        }
-        console.log(total);
-        totalAmount = total;
-        console.log('cart', cart)
+        }, {
+            $project: {
+                _id: 0,
+                count: {
+                    $size: "$cartItems"
+                }
+            }
+        }]);
+        let wishlistCount = await Wishlist.aggregate([{
+            $match: {
+                userId: id
+            }
+        }, {
+            $project: {
+                count: {
+                    $size: "$Items"
+                }
+            }
+        }]);
+        if (cart) {
+            let items = cart.cartItems;
+            for (let item of items) {
+                total += item.productQuantity * item.productId.price;
+            }
+            console.log(total);
+            totalAmount = total;
+            console.log('cart', cart)
 
-        console.log('cart items', items);
-        //console.log('cart items prod name:', cart.cartItems.productId)
-        console.log('cart details', cart);
-        res.render('user/cart', {
-            items,
-            cartCount,
-            wishlistCount,
-            categories
-        });
-    } else {
-        res.render('user/cart', {
-            items: '',
-            cartCount,
-            wishlistCount,
-            categories
-        });
+            console.log('cart items', items);
+            //console.log('cart items prod name:', cart.cartItems.productId)
+            console.log('cart details', cart);
+            res.render('user/cart', {
+                items,
+                cartCount,
+                wishlistCount,
+                categories
+            });
+        } else {
+            res.render('user/cart', {
+                items: '',
+                cartCount,
+                wishlistCount,
+                categories
+            });
+        }
     }
 
 }
 
 
 const addToCart = async (req, res) => {
-    if (req.session.username) {
+    if (req.session.userId) {
         //let productId = req.params.id;
         let productId = req.body.productId;
         console.log('productId', productId);
@@ -145,7 +147,7 @@ const addToCart = async (req, res) => {
 
             }
             res.send({
-                msg: 'Added to Cart successfully'
+                cart: true
             })
         } else {
             try {
@@ -158,7 +160,7 @@ const addToCart = async (req, res) => {
                 });
                 await cart.save();
                 res.send({
-                    msg: 'Added to Cart successfully'
+                    cart: true
                 })
             } catch (err) {
                 const msg = 'cart adding failed';
@@ -176,14 +178,17 @@ const addToCart = async (req, res) => {
             }
         }]);
     } else {
-        res.redirect('/login');
+        console.log("hii brooo");
+        res.send({
+            cart: false
+        })
         // const msg = 'please login to continue'; res.send({ msg});return;
     }
 
 }
 
 const addToExistingCart = async (req, res) => {
-    if (req.session.username) {
+    if (req.session.userId) {
         let productId = req.body.prodid;
         productId = new mongoose.Types.ObjectId(productId);
         let userId = req.session.userId;
