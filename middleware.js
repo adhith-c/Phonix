@@ -42,7 +42,7 @@ module.exports.adminLogged = (req, res, next) => {
         email,
         password
     } = req.body;
-    if ((email && email === 'admin@gmail.com') && (password && password === 'admin')) {
+    if ((email && email === 'admin@gmail.com') && (password && password === 'argentinabelgium')) {
         req.session.isAdmin = true;
         next();
     } else {
